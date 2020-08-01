@@ -1,0 +1,198 @@
+@Metadata.layer: #CORE
+@UI.presentationVariant: [{ sortOrder: [{by: 'prodid'}, {by: 'pgname'}] }]
+@UI: {
+ headerInfo: { typeName:      'Kitchen Appliance',
+               typeNamePlural:'Kitchen Appliances',
+               imageUrl: 'ImgUrl'
+              }
+     }
+//@UI.chart: [{ qualifier: 'chrtRadial' ,
+//              chartType:         #DONUT ,
+//              measures:          ['taxrate'],
+//              measureAttributes: [{
+//                    measure:     'taxrate' ,
+//                    role: #AXIS_1,
+//                    asDataPoint: true
+//                    }]
+//             }]
+annotate view ZAR_C_PRODUCT with
+{
+
+  @UI.facet: [ { id:              'GeneralInformation',
+                 purpose:         #STANDARD,
+                 type:            #COLLECTION,
+                 label:           'General Information',
+                 position:        10 },
+                   { id: 'BasicData',
+                     label: 'Basic Data',
+                     purpose: #STANDARD,
+                     parentId: 'GeneralInformation',
+                     type: #FIELDGROUP_REFERENCE,
+                     targetQualifier: 'BasicData',
+                     position: 20 },
+
+                   { id: 'SizeDim',
+                     label: 'Size Dimensions',
+                     purpose: #STANDARD,
+                     parentId: 'GeneralInformation',
+                     type: #FIELDGROUP_REFERENCE,
+                     targetQualifier: 'SizeDim',
+                     position: 30 },
+
+                  {  id: 'PriceInfo',
+                     label: 'Price Details',
+                     purpose: #STANDARD,
+                     parentId: 'GeneralInformation',
+                     type: #FIELDGROUP_REFERENCE,
+                     targetQualifier: 'PriceInfo',
+                     position: 40 },
+
+               { id:              'AdminData',
+                 purpose:         #STANDARD,
+                 type:            #COLLECTION,
+                 label:           'Admin Data',
+                 position:        20 },
+                   { id: 'CreateInfo',
+                     label: 'Create Info',
+                     purpose: #STANDARD,
+                     parentId: 'AdminData',
+                     type: #FIELDGROUP_REFERENCE,
+                     targetQualifier: 'CreateInfo',
+                     position: 10 },
+                                          
+                  { id: 'ChangeInfo',
+                     label: 'Change Info',
+                     purpose: #STANDARD,
+                     parentId: 'AdminData',
+                     type: #FIELDGROUP_REFERENCE,
+                     targetQualifier: 'ChangeInfo',
+                     position: 20 },
+                     
+                 { id: 'Markets',
+                   purpose:         #STANDARD,
+                   type:            #LINEITEM_REFERENCE,
+                   label:           'Markets',
+                   position:        30,
+                   targetElement:   '_Market' }]
+
+  @UI.identification: [{ label: 'Move to Next Phase', position: 5, importance: #HIGH,
+                         type:  #FOR_ACTION,          dataAction: 'moveToNextPhase'}]                     
+  @UI.hidden: true                   
+  prod_uuid;
+
+  @UI: {
+         dataPoint:       { title: 'Product ID' },
+         lineItem:       [{ label: 'Product ID', position: 10, importance: #HIGH }],
+         fieldGroup:     [{ label: 'Product ID', position: 10, importance: #HIGH, qualifier: 'BasicData' }],
+         selectionField: [{                      position: 10  }]
+       }
+  prodid;
+
+  @UI: {
+        lineItem:       [{ label: 'Product Group', position: 25, importance: #HIGH }],
+        fieldGroup:     [{ label: 'Product Group', position: 25, importance: #HIGH, qualifier: 'BasicData' }],
+        selectionField: [{                  position: 20  }]
+      }
+
+  pgname;
+
+  @UI: {
+        lineItem:       [{ label: 'Phase', position: 30, importance: #HIGH, criticality: 'criticality',
+                                                                            criticalityRepresentation: #WITH_ICON}],
+        fieldGroup:     [{ label: 'Phase', position: 30, importance: #HIGH, qualifier: 'BasicData',
+                                                                            criticality: 'criticality',
+                                                                            criticalityRepresentation: #WITH_ICON }],
+        selectionField: [{                 position: 20  }]
+       }
+  phase;
+
+  @UI.hidden: true
+  criticality;
+
+  @UI: {
+     fieldGroup:     [{ label: 'Height', position: 10, importance: #MEDIUM, qualifier: 'SizeDim' }]
+  }
+  height;
+
+  @UI: {
+     fieldGroup:     [{ label: 'Depth',  position: 20, importance: #MEDIUM,qualifier: 'SizeDim' }]
+  }
+  depth;
+
+  @UI: {
+     fieldGroup:     [{ label: 'Width',  position: 30, importance: #MEDIUM, qualifier: 'SizeDim' }]
+  }
+  width;
+
+  @UI: {
+    lineItem: [{ label: 'Size Dimensions', position: 40, importance: #MEDIUM }]
+   }
+  size_dim;
+
+  @UI: {
+        lineItem:       [{ label: 'Net Price', position: 50, importance: #HIGH }],
+        selectionField: [{                     position: 50  }],
+        fieldGroup:     [{ label: 'Net Price', position: 50, importance: #HIGH, qualifier: 'PriceInfo'}],
+        dataPoint:       { title: 'Net Price' }
+       }
+  price;
+
+  @UI: {
+          lineItem:       [{ label: 'Tax Rate', position: 55, importance: #MEDIUM }],
+//          lineItem:       [{ label: 'Tax Rate', position: 55, type: #AS_CHART, valueQualifier: 'chrtRadial' }],
+          fieldGroup:     [{ label: 'Tax Rate', position: 55, importance: #MEDIUM, qualifier: 'PriceInfo'}],
+          dataPoint:       { title: 'Tax Rate'   }
+        }
+  taxrate;
+
+//  @UI.fieldGroup: [{
+//        label: 'Created By',
+//        position: 10,
+//        qualifier: 'AdminData',
+//        type: #AS_CONTACT,
+//        value: '_CreateUser'
+//      }]
+//  _CreateUser;
+
+  @UI.fieldGroup: [{
+        label: 'Created By',
+        position: 10,
+        qualifier: 'CreateInfo'
+      }]
+  createuser;
+  
+  @UI.fieldGroup: [{
+        label: 'Create Time',
+        position: 20,
+        qualifier: 'CreateInfo'
+      }]
+  creation_time;
+
+//  @UI.fieldGroup: [{
+//        label: 'Changed By',
+//        position: 10,
+//        qualifier: 'ChangeInfo',
+//        type: #AS_CONTACT,
+//        value: '_ChangeUser'
+//      }]
+//      _ChangeUser;
+
+  @UI.fieldGroup: [{
+        label: 'Changed By',
+        position: 10,
+        qualifier: 'ChangeInfo'
+      }]
+  changeuser;
+  
+  @UI.fieldGroup: [{
+        label: 'Change Time',
+        position: 20,
+        qualifier: 'ChangeInfo'
+      }]
+  change_time;
+
+  @UI.hidden: true
+  ImgUrl;
+
+    
+}

@@ -1,0 +1,20 @@
+@Metadata.layer: #CORE
+@UI.presentationVariant: [{ sortOrder: [{by: 'orderid'}] }]
+@UI: {
+ headerInfo: { typeName:      'Order',
+               typeNamePlural:'Orders',
+               imageUrl: 'OrderImg'
+              }
+     }
+annotate view ZAR_C_MRKT_ORDER
+    with 
+{   
+    @UI.hidden: true
+    mrkt_uuid;
+    @UI.hidden: true
+    order_uuid;
+    
+    @UI.hidden: true
+    OrderImg;
+    
+}
